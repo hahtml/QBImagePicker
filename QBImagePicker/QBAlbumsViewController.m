@@ -15,6 +15,7 @@
 // ViewControllers
 #import "QBImagePickerController.h"
 #import "QBAssetsViewController.h"
+#import "UIViewController+EnableAnimation.h"
 
 static CGSize CGSizeScale(CGSize size, CGFloat scale) {
     return CGSizeMake(size.width * scale, size.height * scale);
@@ -36,6 +37,17 @@ static CGSize CGSizeScale(CGSize size, CGFloat scale) {
 @end
 
 @implementation QBAlbumsViewController
+
+- (void)setAssetCollections:(NSArray *)assetCollections {
+    if (_assetCollections != nil) {
+        _assetCollections = assetCollections;
+    } else {
+        _assetCollections = assetCollections;
+        [self setEnableAnimation:NO];
+        [self performSegueWithIdentifier:@"ShowAssets" sender:[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]]];
+        [self setEnableAnimation:YES];
+    }
+}
 
 - (void)viewDidLoad
 {
@@ -187,7 +199,7 @@ static CGSize CGSizeScale(CGSize size, CGFloat scale) {
         [assetCollections addObject:assetCollection];
     }];
     
-    self.assetCollections = assetCollections;
+    [self setAssetCollections:assetCollections];
 }
 
 - (UIImage *)placeholderImageWithSize:(CGSize)size
