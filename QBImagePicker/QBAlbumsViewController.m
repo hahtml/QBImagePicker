@@ -43,8 +43,17 @@ static CGSize CGSizeScale(CGSize size, CGFloat scale) {
         _assetCollections = assetCollections;
     } else {
         _assetCollections = assetCollections;
+        NSInteger recentAddedIndex = 0;
+        NSUInteger index = 0;
+        for (PHAssetCollection *assetCollection in assetCollections) {
+            if (assetCollection.assetCollectionType == PHAssetCollectionSubtypeSmartAlbumRecentlyAdded) {
+                recentAddedIndex = index;
+                break;
+            }
+            index++;
+        }
         [self setEnableAnimation:NO];
-        [self performSegueWithIdentifier:@"ShowAssets" sender:[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]]];
+        [self performSegueWithIdentifier:@"ShowAssets" sender:[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:recentAddedIndex inSection:0]]];
         [self setEnableAnimation:YES];
     }
 }
